@@ -51,6 +51,7 @@ class CardsActivity : AppCompatActivity() {
             }
           }
         }
+
       }
     }
   }

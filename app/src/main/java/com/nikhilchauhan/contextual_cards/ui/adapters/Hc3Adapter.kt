@@ -2,23 +2,24 @@ package com.nikhilchauhan.contextual_cards.ui.adapters
 
 import android.graphics.Color
 import android.text.Spannable
-import android.text.SpannableString
+import android.text.SpannableStringBuilder
 import android.text.style.ForegroundColorSpan
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.nikhilchauhan.contextual_cards.data.remote.responsemodel.CardsResponse
 import com.nikhilchauhan.contextual_cards.data.remote.responsemodel.CardsResponse.CardGroup.Card
-import com.nikhilchauhan.contextual_cards.data.remote.responsemodel.CardsResponse.CardGroup.Card.FormattedDescription
-import com.nikhilchauhan.contextual_cards.data.remote.responsemodel.CardsResponse.CardGroup.Card.FormattedTitle
 import com.nikhilchauhan.contextual_cards.databinding.CardHc3Binding
 import com.nikhilchauhan.contextual_cards.ui.adapters.Hc3Adapter.Hc3ViewHolder
 
 class Hc3Adapter(
-  private val cards: List<CardsResponse.CardGroup.Card?>
+  private val cards: List<Card?>,
+  private val titleIndices: List<Int>,
+  private val descriptionIndices: List<Int>,
 ) : RecyclerView.Adapter<Hc3ViewHolder>() {
+  var titleIndex = 0
+  var descIndex = 0
 
   inner class Hc3ViewHolder(val binding: CardHc3Binding) : RecyclerView.ViewHolder(binding.root)
 
@@ -37,9 +38,6 @@ class Hc3Adapter(
     with(holder.binding) {
       val currentCard = cards[position]
       tvHeading.text = currentCard?.name
-      val formattedTitle = currentCard?.formattedTitle
-      setTitleSpans(formattedTitle)
-      setDescriptionSpans(currentCard?.formattedDescription)
       setButtonsStyle(currentCard)
     }
   }
@@ -51,37 +49,38 @@ class Hc3Adapter(
         setBackgroundColor(Color.parseColor(it.bgColor))
       }
     }
-  }
 
-  private fun CardHc3Binding.setTitleSpans(formattedTitle: FormattedTitle?) {
-    formattedTitle?.let { nnTitle ->
-      val spannable = SpannableString(nnTitle.text)
-      nnTitle.entities?.forEach {
-        spannable.setSpan(
-          ForegroundColorSpan(Color.parseColor(it?.color)), spannable.getSpanStart(it?.text),
-          spannable.getSpanEnd(it?.text), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+    currentCard?.formattedTitle?.let { nnTitle ->
+      nnTitle.entities?.forEach { nnEntity ->
+        val newTitle = StringBuilder(nnTitle.text.toString()).replaceRange(
+          titleIndices[titleIndex], titleIndices[titleIndex] + 2, nnEntity?.text ?: ""
         )
+        val titleSpannable = SpannableStringBuilder(newTitle)
+        titleSpannable.setSpan(
+          ForegroundColorSpan(Color.parseColor(nnEntity?.color)), titleIndices[titleIndex],
+          titleIndices[titleIndex] + nnEntity?.text?.length!!, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+        )
+        titleIndex++
       }
-      tvBodyText.text = spannable
+
+    }
+    currentCard?.formattedDescription?.let { nnDesc ->
+      nnDesc.entities?.forEach { nnEntity ->
+        val newTitle = StringBuilder(nnEntity?.text.toString()).replaceRange(
+          descriptionIndices[descIndex], descriptionIndices[descIndex] + 2, nnEntity?.text ?: ""
+        )
+        val titleSpannable = SpannableStringBuilder(newTitle)
+        titleSpannable.setSpan(
+          ForegroundColorSpan(Color.parseColor(nnEntity?.color)), descriptionIndices[descIndex],
+          descriptionIndices[descIndex] + nnEntity?.text?.length!!,
+          Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+        )
+        descIndex++
+      }
     }
   }
 
-  private fun CardHc3Binding.setDescriptionSpans(description: FormattedDescription?) {
-    description?.let { nnDescription ->
-      val spannable = SpannableString(nnDescription.text)
-      nnDescription.entities?.forEach {
-        spannable.setSpan(
-          ForegroundColorSpan(Color.parseColor(it?.color)), spannable.getSpanStart(it?.text),
-          spannable.getSpanEnd(it?.text), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
-        )
-      }
-      tvBodyText.text = spannable
-    }
-  }
-
-  override fun getItemCount(): Int {
-    TODO("Not yet implemented")
-  }
+  override fun getItemCount(): Int = cards.size
 }
 
 fun ImageView.loadImage(

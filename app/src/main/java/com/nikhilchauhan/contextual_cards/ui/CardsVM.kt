@@ -5,12 +5,10 @@ import androidx.lifecycle.viewModelScope
 import com.nikhilchauhan.contextual_cards.data.remote.NetworkResult
 import com.nikhilchauhan.contextual_cards.data.remote.responsemodel.CardsResponse
 import com.nikhilchauhan.contextual_cards.data.remote.responsemodel.CardsResponse.CardGroup
+import com.nikhilchauhan.contextual_cards.data.remote.responsemodel.CardsResponse.CardGroup.Card
 import com.nikhilchauhan.contextual_cards.data.repository.CardsRepository
 import com.nikhilchauhan.contextual_cards.ui.CardGroupTypes.Hc1
-import com.nikhilchauhan.contextual_cards.ui.CardGroupTypes.Hc3
-import com.nikhilchauhan.contextual_cards.ui.CardGroupTypes.Hc5
-import com.nikhilchauhan.contextual_cards.ui.CardGroupTypes.Hc6
-import com.nikhilchauhan.contextual_cards.ui.CardGroupTypes.Hc9
+import com.nikhilchauhan.contextual_cards.utils.AppConstants
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -31,6 +29,11 @@ class CardsVM @Inject constructor(
   val cardsHashMap = _cardsHashMap.asStateFlow()
 
   val cardsResponse = _cardsResponse.asStateFlow()
+  var titleIndicesList =
+    MutableStateFlow<MutableMap<CardGroupTypes, MutableList<Int>>>(mutableMapOf())
+  var descriptionIndicesList = MutableStateFlow<MutableMap<CardGroupTypes, MutableList<Int>>>(
+    mutableMapOf()
+  )
 
   fun fetchCardsResponse() {
     viewModelScope.launch(Dispatchers.IO) {
@@ -45,32 +48,73 @@ class CardsVM @Inject constructor(
     cardGroups?.forEach { nnGroup ->
       when (nnGroup?.designType) {
         "HC1" -> {
-          nnGroup.cards?.let {
-            _cardsHashMap.value.put(Hc1, it)
+          nnGroup.cards?.let { cardList ->
+            _cardsHashMap.value[Hc1] = cardList
+            getIndices(cardList, CardGroupTypes.Hc1)
           }
         }
         "HC3" -> {
-          nnGroup.cards?.let {
-            _cardsHashMap.value.put(Hc3, it)
+          nnGroup.cards?.let { cardList ->
+            _cardsHashMap.value[Hc1] = cardList
+            getIndices(cardList, CardGroupTypes.Hc3)
           }
         }
         "HC5" -> {
-          nnGroup.cards?.let {
-            _cardsHashMap.value.put(Hc5, it)
+          nnGroup.cards?.let { cardList ->
+            _cardsHashMap.value[Hc1] = cardList
+            getIndices(cardList, CardGroupTypes.Hc5)
           }
         }
         "HC6" -> {
-          nnGroup.cards?.let {
-            _cardsHashMap.value.put(Hc6, it)
+          nnGroup.cards?.let { cardList ->
+            _cardsHashMap.value[Hc1] = cardList
+            getIndices(cardList, CardGroupTypes.Hc6)
           }
         }
         "HC9" -> {
-          nnGroup.cards?.let {
-            _cardsHashMap.value.put(Hc9, it)
+          nnGroup.cards?.let { cardList ->
+            _cardsHashMap.value[Hc1] = cardList
+            getIndices(cardList, CardGroupTypes.Hc9)
           }
         }
       }
     }
+  }
+
+  private fun getIndices(
+    cardList: List<Card?>,
+    groupTypes: CardGroupTypes
+  ) {
+    cardList.forEach { card ->
+      card?.let { nnCard ->
+        titleIndicesList.value[groupTypes]?.addAll(
+          nnCard.formattedTitle?.text.indexesOf(AppConstants.PLACE_HOLDER)
+        )
+        descriptionIndicesList.value[groupTypes]?.addAll(
+          nnCard.formattedDescription?.text.indexesOf(AppConstants.PLACE_HOLDER)
+        )
+      }
+    }
+  }
+
+  fun String?.indexesOf(
+    substr: String,
+    ignoreCase: Boolean = true
+  ): List<Int> {
+    return this?.let {
+      val indexes = mutableListOf<Int>()
+      var startIndex = 0
+      while (startIndex in 0 until length) {
+        val index = this.indexOf(substr, startIndex, ignoreCase)
+        startIndex = if (index != -1) {
+          indexes.add(index)
+          index + substr.length
+        } else {
+          index
+        }
+      }
+      return indexes
+    } ?: emptyList()
   }
 }
 
