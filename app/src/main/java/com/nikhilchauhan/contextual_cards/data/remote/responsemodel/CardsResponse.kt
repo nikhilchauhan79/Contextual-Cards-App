@@ -8,8 +8,6 @@ data class CardsResponse(
     val cardGroups: List<CardGroup?>?
 ) {
     data class CardGroup(
-        @SerializedName("card_type")
-        val cardType: Int?,
         @SerializedName("cards")
         val cards: List<Card?>?,
         @SerializedName("design_type")
@@ -20,8 +18,6 @@ data class CardsResponse(
         val id: Int?,
         @SerializedName("is_scrollable")
         val isScrollable: Boolean?,
-        @SerializedName("level")
-        val level: Int?,
         @SerializedName("name")
         val name: String?
     ) {
@@ -40,8 +36,6 @@ data class CardsResponse(
             val formattedTitle: FormattedTitle?,
             @SerializedName("icon")
             val icon: Icon?,
-            @SerializedName("is_disabled")
-            val isDisabled: Boolean?,
             @SerializedName("name")
             val name: String?,
             @SerializedName("title")
@@ -66,32 +60,42 @@ data class CardsResponse(
                 @SerializedName("text_color")
                 val textColor: String?,
                 @SerializedName("url")
-                val url: String?,
-                @SerializedName("url_choice")
-                val urlChoice: String?
+                val url: String?
             )
 
             data class FormattedDescription(
-                @SerializedName("align")
-                val align: String?,
                 @SerializedName("entities")
-                val entities: List<Any?>?,
+                val entities: List<Entity?>?,
                 @SerializedName("text")
                 val text: String?
-            )
+            ) {
+                data class Entity(
+                    @SerializedName("color")
+                    val color: String?,
+                    @SerializedName("text")
+                    val text: String?
+                )
+            }
 
             data class FormattedTitle(
                 @SerializedName("align")
                 val align: String?,
                 @SerializedName("entities")
-                val entities: List<Any?>?,
+                val entities: List<Entity?>?,
                 @SerializedName("text")
                 val text: String?
-            )
+            ) {
+                data class Entity(
+                    @SerializedName("color")
+                    val color: String?,
+                    @SerializedName("text")
+                    val text: String?
+                )
+            }
 
             data class Icon(
                 @SerializedName("aspect_ratio")
-                val aspectRatio: Double?,
+                val aspectRatio: Int?,
                 @SerializedName("image_type")
                 val imageType: String?,
                 @SerializedName("image_url")

@@ -1,4 +1,13 @@
 <resources>
   <string name="app_name">Contextual-Cards</string>
   <string name="an_error_occured">Error getting response. Please try again later!!</string>
+  <!-- TODO: Remove or change this placeholder text -->
+  <string name="hello_blank_fragment">Hello blank fragment</string>
+  <string name="sample_subtitle">This is a sample text for the subtitle that you can add to contextual card</string>
+  <string name="sample_heading">Big Display card with action</string>
+  <string name="sample_btn_text">Action</string>
+  <string name="sample_small_card_title">Small card with arrow</string>
+  <string name="save_the_streak">Save the streak</string>
+  <string name="small_display_card">Small display card</string>
+  <string name="arya_stark">Arya Stark</string>
 </resources>
