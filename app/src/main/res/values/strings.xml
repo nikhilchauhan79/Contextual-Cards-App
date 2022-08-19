@@ -1,0 +1,4 @@
+<resources>
+  <string name="app_name">Contextual-Cards</string>
+  <string name="an_error_occured">Error getting response. Please try again later!!</string>
+</resources>
