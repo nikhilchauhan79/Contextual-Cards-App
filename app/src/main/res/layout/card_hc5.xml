@@ -2,11 +2,9 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     >
-  <data>
-
-  </data>
   <com.google.android.material.card.MaterialCardView
       android:layout_width="match_parent"
+      android:maxHeight="@dimen/size_180dp"
       android:layout_height="@dimen/size_140dp"
       app:cardCornerRadius="@dimen/size_12dp"
       app:cardUseCompatPadding="true"
@@ -19,52 +17,58 @@
 
       <ImageView
           android:id="@+id/iv_icon_start"
-          android:layout_width="wrap_content"
+          android:layout_width="match_parent"
           android:layout_height="wrap_content"
-          android:src="@drawable/ic_launcher_background"
+          android:scaleType="fitXY"
           app:layout_constraintBottom_toBottomOf="parent"
           app:layout_constraintLeft_toLeftOf="parent"
           app:layout_constraintTop_toTopOf="parent"
           />
 
-      <TextView
-          android:id="@+id/tv_top"
+      <ImageView
+          android:id="@+id/iv_icon_end"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
-          android:gravity="start"
-          android:textSize="@dimen/size_20sp"
+          android:layout_marginStart="@dimen/size_4dp"
+          android:src="@drawable/ic_baseline_arrow_forward_ios_24"
+          android:visibility="gone"
+          app:layout_constraintBottom_toBottomOf="@id/tv_title"
+          app:layout_constraintLeft_toRightOf="@id/tv_title"
+          />
+
+      <TextView
+          android:id="@+id/tv_title"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
           android:layout_marginStart="@dimen/size_16dp"
+          android:gravity="start"
           android:text="@string/save_the_streak"
-          app:layout_constraintBottom_toTopOf="@id/tv_bottom"
+          android:textSize="@dimen/size_20sp"
+          android:visibility="gone"
+          app:layout_constraintBottom_toTopOf="@id/tv_description"
+          app:layout_constraintHorizontal_chainStyle="packed"
           app:layout_constraintLeft_toRightOf="@id/iv_icon_start"
           app:layout_constraintRight_toLeftOf="@id/iv_icon_end"
           app:layout_constraintTop_toTopOf="parent"
           app:layout_constraintVertical_chainStyle="packed"
-          app:layout_constraintHorizontal_chainStyle="packed"
-          />
-
-      <ImageView
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:id="@+id/iv_icon_end"
-          android:layout_marginStart="@dimen/size_4dp"
-          android:src="@drawable/ic_baseline_arrow_forward_ios_24"
-          app:layout_constraintBottom_toBottomOf="@id/tv_top"
-          app:layout_constraintLeft_toRightOf="@id/tv_top"
           />
       <TextView
-          android:id="@+id/tv_bottom"
+          android:id="@+id/tv_description"
           android:layout_width="@dimen/size_0dp"
           android:layout_height="wrap_content"
-          android:gravity="start"
-          android:textSize="@dimen/size_14sp"
           android:layout_marginStart="@dimen/size_16dp"
+          android:gravity="start"
           android:text="@string/save_the_streak"
+          android:textSize="@dimen/size_14sp"
+          android:visibility="gone"
           app:layout_constraintBottom_toBottomOf="parent"
           app:layout_constraintLeft_toRightOf="@id/iv_icon_start"
-          app:layout_constraintTop_toBottomOf="@id/tv_top"
+          app:layout_constraintTop_toBottomOf="@id/tv_title"
           />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
   </com.google.android.material.card.MaterialCardView>
+  <data>
+
+  </data>
 </layout>

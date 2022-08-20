@@ -2,12 +2,10 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     >
-  <data>
-
-  </data>
   <com.google.android.material.card.MaterialCardView
+      android:id="@+id/card_view"
       android:layout_width="match_parent"
-      android:layout_height="@dimen/size_60dp"
+      android:layout_height="@dimen/size_100dp"
       app:cardCornerRadius="@dimen/size_12dp"
       app:cardUseCompatPadding="true"
       >
@@ -23,11 +21,11 @@
           android:layout_height="wrap_content"
           android:layout_marginStart="@dimen/size_16dp"
           android:text="@string/small_display_card"
-          app:layout_constraintVertical_chainStyle="packed"
+          app:layout_constraintBottom_toTopOf="@id/tv_body"
           app:layout_constraintLeft_toRightOf="@id/iv_start"
           app:layout_constraintRight_toRightOf="parent"
           app:layout_constraintTop_toTopOf="parent"
-          app:layout_constraintBottom_toTopOf="@id/tv_body"
+          app:layout_constraintVertical_chainStyle="packed"
           />
 
       <TextView
@@ -35,18 +33,20 @@
           android:layout_width="@dimen/size_0dp"
           android:layout_height="wrap_content"
           android:layout_marginStart="@dimen/size_16dp"
-          android:text="@string/arya_stark"
           android:layout_marginTop="@dimen/size_1dp"
+          android:text="@string/arya_stark"
+          app:layout_constraintBottom_toBottomOf="parent"
           app:layout_constraintLeft_toRightOf="@id/iv_start"
           app:layout_constraintRight_toRightOf="parent"
-          app:layout_constraintBottom_toBottomOf="parent"
           app:layout_constraintTop_toBottomOf="@id/tv_title"
           />
 
       <com.google.android.material.imageview.ShapeableImageView
           android:id="@+id/iv_start"
-          android:layout_width="50dp"
-          android:layout_height="50dp"
+          android:layout_width="@dimen/size_80dp"
+          android:layout_height="@dimen/size_80dp"
+          android:layout_marginStart="@dimen/size_8dp"
+          android:scaleType="fitXY"
           android:src="@drawable/ic_launcher_background"
           app:layout_constraintBottom_toBottomOf="parent"
           app:layout_constraintLeft_toLeftOf="parent"
@@ -57,4 +57,7 @@
 
     </androidx.constraintlayout.widget.ConstraintLayout>
   </com.google.android.material.card.MaterialCardView>
+  <data>
+
+  </data>
 </layout>

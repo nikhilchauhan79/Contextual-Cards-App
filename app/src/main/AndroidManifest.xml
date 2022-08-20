@@ -2,6 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     package="com.nikhilchauhan.contextual_cards">
+  <uses-permission android:name="android.permission.INTERNET" />
 
   <application
       android:name=".ContextualCardsApp"
@@ -15,10 +16,10 @@
       android:theme="@style/Theme.ContextualCards"
       tools:targetApi="31">
     <activity
-        android:name=".CardsActivity"
+        android:name=".MainActivity"
         android:exported="false" />
     <activity
-        android:name=".MainActivity"
+        android:name=".CardsActivity"
         android:exported="true">
       <intent-filter>
         <action android:name="android.intent.action.MAIN" />
@@ -27,7 +28,5 @@
       </intent-filter>
     </activity>
   </application>
-
-  <uses-permission android:name="android.permission.INTERNET" />
 
 </manifest>
