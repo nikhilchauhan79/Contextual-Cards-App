@@ -3,91 +3,112 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     >
-  <androidx.core.widget.NestedScrollView
+  <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+      android:id="@+id/swipe_container"
       android:layout_width="match_parent"
       android:layout_height="match_parent"
-      android:layout_marginHorizontal="@dimen/size_16dp"
-      android:layout_marginTop="@dimen/size_16dp"
-      android:fillViewport="true"
       >
-
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".CardsActivity"
+        android:layout_marginHorizontal="@dimen/size_16dp"
+        android:layout_marginTop="@dimen/size_16dp"
+        android:fillViewport="true"
         >
 
-      <androidx.recyclerview.widget.RecyclerView
-          android:id="@+id/rv_hc3"
+
+      <androidx.constraintlayout.widget.ConstraintLayout
           android:layout_width="match_parent"
-          android:layout_height="@dimen/size_350dp"
-          android:layout_marginBottom="@dimen/size_16dp"
-          app:layout_constraintBottom_toTopOf="@id/rv_hc6"
-          app:layout_constraintLeft_toLeftOf="parent"
-          app:layout_constraintRight_toRightOf="parent"
-          app:layout_constraintTop_toTopOf="parent"
-          tools:listitem="@layout/card_hc3"
-          />
+          android:layout_height="match_parent"
+          tools:context=".CardsActivity"
+          >
+
+        <ProgressBar
+            android:id="@+id/progress_bar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="@id/rv_hc5"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="@id/rv_hc5"
+            style="?android:attr/progressBarStyle"
+            />
 
 
-      <androidx.recyclerview.widget.RecyclerView
-          android:id="@+id/rv_hc6"
-          android:layout_width="match_parent"
-          android:layout_height="@dimen/size_80dp"
-          android:layout_marginBottom="@dimen/size_16dp"
-          android:orientation="horizontal"
-          app:layout_constraintBottom_toTopOf="@id/rv_hc5"
-          app:layout_constraintLeft_toLeftOf="parent"
-          app:layout_constraintRight_toRightOf="parent"
-          app:layout_constraintTop_toBottomOf="@id/rv_hc3"
-          tools:listitem="@layout/card_hc6"
-          />
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_hc3"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/size_350dp"
+            android:layout_marginBottom="@dimen/size_16dp"
+            app:layout_constraintBottom_toTopOf="@id/rv_hc6"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:listitem="@layout/card_hc3"
+            />
 
 
-      <androidx.recyclerview.widget.RecyclerView
-          android:id="@+id/rv_hc5"
-          android:layout_width="match_parent"
-          android:layout_height="@dimen/size_140dp"
-          android:layout_marginBottom="@dimen/size_16dp"
-          android:maxHeight="@dimen/size_180dp"
-          android:orientation="horizontal"
-          app:layout_constraintBottom_toTopOf="@id/rv_hc9"
-          app:layout_constraintLeft_toLeftOf="parent"
-          app:layout_constraintRight_toRightOf="parent"
-          app:layout_constraintTop_toBottomOf="@id/rv_hc6"
-          tools:listitem="@layout/card_hc5"
-          />
-
-      <androidx.recyclerview.widget.RecyclerView
-          android:id="@+id/rv_hc9"
-          android:layout_width="match_parent"
-          android:layout_height="@dimen/size_195dp"
-          android:orientation="horizontal"
-          app:layout_constraintBottom_toTopOf="@id/rv_hc1"
-          app:layout_constraintLeft_toLeftOf="parent"
-          app:layout_constraintRight_toRightOf="parent"
-          app:layout_constraintTop_toBottomOf="@id/rv_hc5"
-          tools:listitem="@layout/card_hc9"
-          />
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_hc6"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/size_80dp"
+            android:layout_marginBottom="@dimen/size_16dp"
+            android:orientation="horizontal"
+            app:layout_constraintBottom_toTopOf="@id/rv_hc5"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/rv_hc3"
+            tools:listitem="@layout/card_hc6"
+            />
 
 
-      <androidx.recyclerview.widget.RecyclerView
-          android:id="@+id/rv_hc1"
-          android:layout_width="match_parent"
-          android:layout_height="@dimen/size_90dp"
-          android:layout_marginBottom="@dimen/size_16dp"
-          android:orientation="horizontal"
-          android:layout_marginTop="@dimen/size_16dp"
-          app:layout_constraintLeft_toLeftOf="parent"
-          app:layout_constraintRight_toRightOf="parent"
-          app:layout_constraintTop_toBottomOf="@id/rv_hc9"
-          tools:listitem="@layout/card_hc1"
-          />
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_hc5"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/size_140dp"
+            android:layout_marginBottom="@dimen/size_16dp"
+            android:maxHeight="@dimen/size_180dp"
+            android:orientation="horizontal"
+            app:layout_constraintBottom_toTopOf="@id/rv_hc9"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/rv_hc6"
+            tools:listitem="@layout/card_hc5"
+            />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_hc9"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/size_195dp"
+            android:orientation="horizontal"
+            app:layout_constraintBottom_toTopOf="@id/rv_hc1"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/rv_hc5"
+            tools:listitem="@layout/card_hc9"
+            />
 
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_hc1"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/size_90dp"
+            android:layout_marginBottom="@dimen/size_16dp"
+            android:layout_marginTop="@dimen/size_16dp"
+            android:orientation="horizontal"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/rv_hc9"
+            tools:listitem="@layout/card_hc1"
+            />
 
-  </androidx.core.widget.NestedScrollView>
+
+      </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+    </androidx.core.widget.NestedScrollView>
+  </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
   <data>
 

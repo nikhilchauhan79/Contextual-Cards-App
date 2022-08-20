@@ -1,6 +1,7 @@
 package com.nikhilchauhan.contextual_cards
 
 import android.os.Bundle
+import android.view.View
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Lifecycle
@@ -41,6 +42,10 @@ class CardsActivity : AppCompatActivity() {
 
     binding?.apply {
       handleResponse()
+      swipeContainer.setOnRefreshListener {
+        cardsVM.fetchCardsResponse()
+        swipeContainer.isRefreshing = false
+      }
     }
   }
 
@@ -51,8 +56,9 @@ class CardsActivity : AppCompatActivity() {
           cardsVM.cardsResponse.collect { response ->
             when (response) {
               is NetworkResult.Success -> {
+                progressBar.visibility = View.GONE
                 hc3Adapter = Hc3Adapter(
-                  cardsVM._hc3CardsList.value,
+                  cardsVM.hc3CardsList.value,
                   cardsVM.hc3TitleSpanList.value,
                   cardsVM.hc3DescriptionSpanList.value
                 )
@@ -62,7 +68,7 @@ class CardsActivity : AppCompatActivity() {
                 }
 
                 hc6Adapter = Hc6Adapter(
-                  cardsVM._hc6CardsList.value,
+                  cardsVM.hc6CardsList.value,
                   cardsVM.hc6TitleSpanList.value,
                   cardsVM.hc6DescriptionSpanList.value
                 )
@@ -72,7 +78,7 @@ class CardsActivity : AppCompatActivity() {
                 }
 
                 hc5Adapter = Hc5Adapter(
-                  cardsVM._hc5CardsList.value,
+                  cardsVM.hc5CardsList.value,
                   cardsVM.hc5TitleSpanList.value,
                   cardsVM.hc5DescriptionSpanList.value
                 )
@@ -82,7 +88,7 @@ class CardsActivity : AppCompatActivity() {
                 }
 
                 hc9Adapter = Hc9Adapter(
-                  cardsVM._hc9CardsList.value,
+                  cardsVM.hc9CardsList.value,
                   cardsVM.hc9TitleSpanList.value,
                   cardsVM.hc9DescriptionSpanList.value
                 )
@@ -93,7 +99,7 @@ class CardsActivity : AppCompatActivity() {
                 }
 
                 hc1Adapter = Hc1Adapter(
-                  cardsVM._hc1CardsList.value,
+                  cardsVM.hc1CardsList.value,
                   cardsVM.hc1TitleSpanList.value,
                   cardsVM.hc1DescriptionSpanList.value
                 )
@@ -104,9 +110,11 @@ class CardsActivity : AppCompatActivity() {
                 }
               }
               is NetworkResult.Error -> {
+                progressBar.visibility = View.GONE
                 Snackbar.make(root, response.message.toString(), Snackbar.LENGTH_LONG).show()
               }
               is NetworkResult.InProgress -> {
+                progressBar.visibility = View.VISIBLE
               }
               else -> {
               }

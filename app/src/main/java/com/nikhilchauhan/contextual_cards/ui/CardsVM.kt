@@ -38,10 +38,7 @@ class CardsVM @Inject constructor(
   private val _cardsResponse: MutableStateFlow<NetworkResult<CardsResponse>?> =
     MutableStateFlow(null)
 
-  private val _cardsList: MutableStateFlow<MutableList<CardsResponse.CardGroup.Card?>> =
-    MutableStateFlow(mutableListOf())
-
-  val _hc3CardsList: MutableStateFlow<MutableList<CardsResponse.CardGroup.Card?>> =
+  val hc3CardsList: MutableStateFlow<MutableList<Card?>> =
     MutableStateFlow(mutableListOf())
 
   val hc3TitleSpanList: MutableStateFlow<MutableList<SpannableStringBuilder>> =
@@ -74,24 +71,23 @@ class CardsVM @Inject constructor(
   val hc5TitleSpanList: MutableStateFlow<MutableList<SpannableStringBuilder>> =
     MutableStateFlow(mutableListOf())
 
-  val _hc5CardsList: MutableStateFlow<MutableList<CardsResponse.CardGroup.Card?>> =
+  val hc5CardsList: MutableStateFlow<MutableList<Card?>> =
     MutableStateFlow(mutableListOf())
 
-  val _hc6CardsList: MutableStateFlow<MutableList<CardsResponse.CardGroup.Card?>> =
+  val hc6CardsList: MutableStateFlow<MutableList<Card?>> =
     MutableStateFlow(mutableListOf())
 
-  val _hc9CardsList: MutableStateFlow<MutableList<CardsResponse.CardGroup.Card?>> =
+  val hc9CardsList: MutableStateFlow<MutableList<Card?>> =
     MutableStateFlow(mutableListOf())
 
-  val _hc1CardsList: MutableStateFlow<MutableList<CardsResponse.CardGroup.Card?>> =
+  val hc1CardsList: MutableStateFlow<MutableList<Card?>> =
     MutableStateFlow(mutableListOf())
-
-  val cardsHashMap = _cardsList.asStateFlow()
 
   val cardsResponse = _cardsResponse.asStateFlow()
 
-  private fun fetchCardsResponse() {
+  fun fetchCardsResponse() {
     viewModelScope.launch {
+      _cardsResponse.emit(NetworkResult.InProgress())
       repository.getCards().collect { response ->
         _cardsResponse.emit(response)
         filterCardGroups(response.data?.cardGroups)
@@ -100,40 +96,49 @@ class CardsVM @Inject constructor(
   }
 
   private fun filterCardGroups(cardGroups: List<CardGroup?>?) {
+    invalidateCardLists()
     cardGroups?.forEach { nnGroup ->
       when (nnGroup?.designType) {
         "HC1" -> {
           nnGroup.cards?.let { cardList ->
-            _hc1CardsList.value.addAll(cardList)
-            createSpans(cardList, CardGroupTypes.Hc1)
+            hc1CardsList.value.addAll(cardList)
+            createSpans(cardList, Hc1)
           }
         }
         "HC3" -> {
           nnGroup.cards?.let { cardList ->
-            _hc3CardsList.value.addAll(cardList)
-            createSpans(cardList, CardGroupTypes.Hc3)
+            hc3CardsList.value.addAll(cardList)
+            createSpans(cardList, Hc3)
           }
         }
         "HC5" -> {
           nnGroup.cards?.let { cardList ->
-            _hc5CardsList.value.addAll(cardList)
-            createSpans(cardList, CardGroupTypes.Hc5)
+            hc5CardsList.value.addAll(cardList)
+            createSpans(cardList, Hc5)
           }
         }
         "HC6" -> {
           nnGroup.cards?.let { cardList ->
-            _hc6CardsList.value.addAll(cardList)
-            createSpans(cardList, CardGroupTypes.Hc6)
+            hc6CardsList.value.addAll(cardList)
+            createSpans(cardList, Hc6)
           }
         }
         "HC9" -> {
           nnGroup.cards?.let { cardList ->
-            _hc9CardsList.value.addAll(cardList)
-            createSpans(cardList, CardGroupTypes.Hc9)
+            hc9CardsList.value.addAll(cardList)
+            createSpans(cardList, Hc9)
           }
         }
       }
     }
+  }
+
+  private fun invalidateCardLists() {
+    hc1CardsList.value = mutableListOf()
+    hc5CardsList.value = mutableListOf()
+    hc9CardsList.value = mutableListOf()
+    hc6CardsList.value = mutableListOf()
+    hc3CardsList.value = mutableListOf()
   }
 
   private fun createSpans(
