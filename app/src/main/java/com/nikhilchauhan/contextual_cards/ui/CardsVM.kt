@@ -4,7 +4,9 @@ import android.content.SharedPreferences
 import android.graphics.Color
 import android.text.Spannable
 import android.text.SpannableStringBuilder
+import android.text.TextPaint
 import android.text.style.ForegroundColorSpan
+import android.text.style.URLSpan
 import android.util.Log
 import androidx.core.content.edit
 import androidx.lifecycle.ViewModel
@@ -207,6 +209,12 @@ class CardsVM @Inject constructor(
             ForegroundColorSpan(Color.parseColor(nnEntity.color)), 0, nnText.length,
             Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
           )
+          url?.let {
+            spanStr.setSpan(
+              CustomUrlSpan(url, nnEntity.color), 0, nnText.length,
+              Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+            )
+          }
         }
         spansList.add(spanStr)
       }
@@ -301,6 +309,12 @@ class CardsVM @Inject constructor(
             ForegroundColorSpan(Color.parseColor(nnEntity.color)), 0, nnText.length,
             Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
           )
+          url?.let {
+            spanStr.setSpan(
+              CustomUrlSpan(url, nnEntity.color), 0, nnText.length,
+              Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+            )
+          }
         }
         spansList.add(spanStr)
       }
@@ -327,6 +341,18 @@ class CardsVM @Inject constructor(
       newDescriptionList.add(SpannableStringBuilder(formattedDescription.text))
     } else newDescriptionList.add(newDescription)
     emitInDescriptionFlow(newDescriptionList, cardGroup)
+  }
+}
+
+class CustomUrlSpan(
+  url: String,
+  private val textColor: String?
+) : URLSpan(url) {
+  override fun updateDrawState(ds: TextPaint) {
+    super.updateDrawState(ds)
+    if (textColor != null) {
+      ds.color = Color.parseColor(textColor)
+    }
   }
 }
 
