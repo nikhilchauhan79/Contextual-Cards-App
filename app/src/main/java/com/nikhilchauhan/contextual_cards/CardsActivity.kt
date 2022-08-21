@@ -1,6 +1,7 @@
 package com.nikhilchauhan.contextual_cards
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -8,21 +9,25 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.LinearSmoothScroller
 import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.RecyclerView.SmoothScroller
 import com.google.android.material.snackbar.Snackbar
 import com.nikhilchauhan.contextual_cards.data.remote.NetworkResult
 import com.nikhilchauhan.contextual_cards.databinding.ActivityCardsBinding
+import com.nikhilchauhan.contextual_cards.ui.CardItemTouchHelper
 import com.nikhilchauhan.contextual_cards.ui.CardsVM
 import com.nikhilchauhan.contextual_cards.ui.adapters.Hc1Adapter
 import com.nikhilchauhan.contextual_cards.ui.adapters.Hc3Adapter
 import com.nikhilchauhan.contextual_cards.ui.adapters.Hc5Adapter
 import com.nikhilchauhan.contextual_cards.ui.adapters.Hc6Adapter
 import com.nikhilchauhan.contextual_cards.ui.adapters.Hc9Adapter
+import com.nikhilchauhan.contextual_cards.ui.callbacks.OnItemLongPressListener
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
-class CardsActivity : AppCompatActivity() {
+class CardsActivity : AppCompatActivity(), OnItemLongPressListener {
   private var _binding: ActivityCardsBinding? = null
   private val cardsVM: CardsVM by viewModels()
 
@@ -60,12 +65,15 @@ class CardsActivity : AppCompatActivity() {
                 hc3Adapter = Hc3Adapter(
                   cardsVM.hc3CardsList.value,
                   cardsVM.hc3TitleSpanList.value,
-                  cardsVM.hc3DescriptionSpanList.value
+                  cardsVM.hc3DescriptionSpanList.value, this@CardsActivity
                 )
                 rvHc3.apply {
                   layoutManager = LinearLayoutManager(context, RecyclerView.HORIZONTAL, false)
                   adapter = hc3Adapter
                 }
+                CardItemTouchHelper(
+                  cardsVM.hc3CardsList.value, hc3Adapter, this@handleResponse
+                ).attachToRecyclerView(rvHc3)
 
                 hc6Adapter = Hc6Adapter(
                   cardsVM.hc6CardsList.value,
@@ -123,5 +131,12 @@ class CardsActivity : AppCompatActivity() {
         }
       }
     }
+  }
+
+  override fun onLongPress(
+    position: Int,
+    view: View
+  ) {
+
   }
 }

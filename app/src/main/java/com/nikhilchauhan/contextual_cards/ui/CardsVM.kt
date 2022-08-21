@@ -4,6 +4,7 @@ import android.graphics.Color
 import android.text.Spannable
 import android.text.SpannableStringBuilder
 import android.text.style.ForegroundColorSpan
+import android.text.style.URLSpan
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -147,8 +148,8 @@ class CardsVM @Inject constructor(
   ) {
     cardList.forEach { card ->
       card?.run {
-        createTitleSpans(formattedTitle, formattedTitle?.entities, cardGroup)
-        createDescriptionSpans(formattedDescription, formattedDescription?.entities, cardGroup)
+        createTitleSpans(formattedTitle, formattedTitle?.entities, cardGroup, url)
+        createDescriptionSpans(formattedDescription, formattedDescription?.entities, cardGroup, url)
       }
     }
   }
@@ -156,10 +157,12 @@ class CardsVM @Inject constructor(
   private fun createTitleSpans(
     formattedTitle: FormattedTitle?,
     entities: List<Entity?>?,
-    cardGroup: CardGroupTypes
+    cardGroup: CardGroupTypes,
+    url: String?
   ) {
     val text = formattedTitle?.text
     val spansList = mutableListOf<SpannableStringBuilder>()
+    val newTitleList = mutableListOf<SpannableStringBuilder>()
     entities?.map { entity ->
       entity?.let { nnEntity ->
         val spanStr = SpannableStringBuilder(nnEntity.text)
@@ -168,6 +171,9 @@ class CardsVM @Inject constructor(
             ForegroundColorSpan(Color.parseColor(nnEntity.color)), 0, nnText.length,
             Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
           )
+          url?.let {
+            spanStr.setSpan(URLSpan(url), 0, nnText.length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+          }
         }
         spansList.add(spanStr)
       }
@@ -180,6 +186,7 @@ class CardsVM @Inject constructor(
       var index = 0
       while (index in nnText.indices) {
         Log.d("TAG", "createTitleSpans: " + index)
+        Log.d("TAG", "createTitleSpans: " + nnText[index])
         if ('{' == nnText[index] && index + 1 in nnText.indices && '}' == nnText[index + 1]) {
           newTitle.append(spansList[counter])
           index += 2
@@ -191,9 +198,10 @@ class CardsVM @Inject constructor(
       }
     }
     if (spansList.isEmpty() && formattedTitle?.text != null) {
-      spansList.add(SpannableStringBuilder(formattedTitle.text))
-    }
-    emitInTitleFlow(spansList, cardGroup)
+      newTitleList.add(SpannableStringBuilder(formattedTitle.text))
+    } else newTitleList.add(newTitle)
+
+    emitInTitleFlow(newTitleList, cardGroup)
   }
 
   private fun emitInTitleFlow(
@@ -211,6 +219,7 @@ class CardsVM @Inject constructor(
         hc5TitleSpanList.value.addAll(spansList)
       }
       Hc6 -> {
+        Log.d("TAG", "emitInTitleFlow: " + hc6TitleSpanList)
         hc6TitleSpanList.value.addAll(spansList)
       }
       Hc9 -> {
@@ -245,10 +254,12 @@ class CardsVM @Inject constructor(
   private fun createDescriptionSpans(
     formattedDescription: FormattedDescription?,
     entities: List<FormattedDescription.Entity?>?,
-    cardGroup: CardGroupTypes
+    cardGroup: CardGroupTypes,
+    url: String?
   ) {
     val text = formattedDescription?.text
     val spansList = mutableListOf<SpannableStringBuilder>()
+    val newDescriptionList = mutableListOf<SpannableStringBuilder>()
     entities?.map { entity ->
       entity?.let { nnEntity ->
         val spanStr = SpannableStringBuilder(nnEntity.text)
@@ -257,6 +268,9 @@ class CardsVM @Inject constructor(
             ForegroundColorSpan(Color.parseColor(nnEntity.color)), 0, nnText.length,
             Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
           )
+          url?.let {
+            spanStr.setSpan(URLSpan(url), 0, nnText.length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+          }
         }
         spansList.add(spanStr)
       }
@@ -267,20 +281,22 @@ class CardsVM @Inject constructor(
       var counter = 0
       var index = 0
       while (index in nnText.indices) {
+
         if ('{' == nnText[index] && index + 1 in nnText.indices && '}' == nnText[index + 1]) {
           newDescription.append(spansList[counter])
           index += 2
           counter++
         } else {
+          Log.d("TAG", "createDescriptionSpans: " + nnText[index])
           newDescription.append(nnText[index])
           index++
         }
       }
     }
     if (spansList.isEmpty() && formattedDescription?.text != null) {
-      spansList.add(SpannableStringBuilder(formattedDescription.text))
-    }
-    emitInDescriptionFlow(spansList, cardGroup)
+      newDescriptionList.add(SpannableStringBuilder(formattedDescription.text))
+    } else newDescriptionList.add(newDescription)
+    emitInDescriptionFlow(newDescriptionList, cardGroup)
   }
 }
 

@@ -11,4 +11,6 @@
   <string name="small_display_card">Small display card</string>
   <string name="arya_stark">Arya Stark</string>
   <string name="fampay">fampay</string>
+  <string name="remind_later">remind later</string>
+  <string name="dismiss_now">dismiss now</string>
 </resources>

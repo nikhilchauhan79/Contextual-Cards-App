@@ -1,6 +1,8 @@
 package com.nikhilchauhan.contextual_cards.ui.adapters
 
+import android.graphics.Color
 import android.text.SpannableStringBuilder
+import android.text.method.LinkMovementMethod
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -30,12 +32,22 @@ class Hc6Adapter(
   ) {
     with(holder.binding) {
       val currentCard = cards[position]
-      tvTitle.text = titleSpans[position]
-      tvDescription.text = descriptionSpans[position]
+      tvTitle.apply {
+        movementMethod = LinkMovementMethod()
+        text = titleSpans[position]
+      }
+      tvDescription.apply {
+        movementMethod = LinkMovementMethod()
+        text = descriptionSpans[position]
+      }
       currentCard?.icon?.let { icon ->
         if (icon.imageUrl != null) {
           ivIconStart.loadImage(icon.imageUrl)
         }
+      }
+
+      currentCard?.bgColor?.let {
+        cardViewHc6.setBackgroundColor(Color.parseColor(it))
       }
     }
   }

@@ -4,7 +4,9 @@ import android.graphics.Color
 import android.text.Spannable
 import android.text.SpannableString
 import android.text.SpannableStringBuilder
+import android.text.method.LinkMovementMethod
 import android.text.style.ForegroundColorSpan
+import android.text.style.URLSpan
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.ImageView
@@ -13,14 +15,34 @@ import com.bumptech.glide.Glide
 import com.nikhilchauhan.contextual_cards.data.remote.responsemodel.CardsResponse.CardGroup.Card
 import com.nikhilchauhan.contextual_cards.databinding.CardHc3Binding
 import com.nikhilchauhan.contextual_cards.ui.adapters.Hc3Adapter.Hc3ViewHolder
+import com.nikhilchauhan.contextual_cards.ui.callbacks.OnItemLongPressListener
+import com.nikhilchauhan.contextual_cards.utils.Utils.hide
+import com.nikhilchauhan.contextual_cards.utils.Utils.show
 
 class Hc3Adapter(
   private val cards: List<Card?>,
   private val titleSpans: List<SpannableStringBuilder>,
   private val descriptionSpans: List<SpannableStringBuilder>,
+  private val onItemLongPressListener: OnItemLongPressListener
 ) : RecyclerView.Adapter<Hc3ViewHolder>() {
 
-  inner class Hc3ViewHolder(val binding: CardHc3Binding) : RecyclerView.ViewHolder(binding.root)
+  inner class Hc3ViewHolder(val binding: CardHc3Binding) : RecyclerView.ViewHolder(binding.root) {
+    init {
+      binding.root.setOnLongClickListener {
+        onItemLongPressListener.onLongPress(layoutPosition, it)
+        // showContextMenu(layoutPosition)
+        true
+      }
+    }
+
+    fun showContextMenu(position: Int) {
+      binding.llContextMenu.show()
+    }
+
+    fun hideContextMenu(position: Int) {
+      binding.llContextMenu.hide()
+    }
+  }
 
   override fun onCreateViewHolder(
     parent: ViewGroup,
@@ -36,12 +58,22 @@ class Hc3Adapter(
   ) {
     with(holder.binding) {
       val currentCard = cards[position]
-      tvHeading.text = titleSpans[position]
-      tvBodyText.text = descriptionSpans[position]
+      tvHeading.apply {
+        movementMethod = LinkMovementMethod()
+        text = titleSpans[position]
+
+      }
+      tvBodyText.apply {
+        movementMethod = LinkMovementMethod()
+        text = descriptionSpans[position]
+      }
       currentCard?.bgImage?.let { bgImage ->
         if (bgImage.imageUrl != null) {
           ivThreeCard.loadImage(bgImage.imageUrl)
         }
+      }
+      currentCard?.bgColor?.let {
+        cardViewHc3.setBackgroundColor(Color.parseColor(it))
       }
       setButtonsStyle(currentCard)
     }
@@ -54,7 +86,11 @@ class Hc3Adapter(
         cta.text?.length?.let {
           buttonTextSpan.setSpan(
             ForegroundColorSpan(Color.parseColor(cta.textColor)), 0, it,
-            Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+            Spannable.SPAN_INCLUSIVE_INCLUSIVE
+          )
+          buttonTextSpan.setSpan(
+            URLSpan(currentCard.url), 0, it,
+            Spannable.SPAN_INCLUSIVE_INCLUSIVE
           )
         }
         text = buttonTextSpan

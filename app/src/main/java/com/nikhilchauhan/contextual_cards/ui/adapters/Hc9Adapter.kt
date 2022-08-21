@@ -1,5 +1,6 @@
 package com.nikhilchauhan.contextual_cards.ui.adapters
 
+import android.graphics.Color
 import android.text.SpannableStringBuilder
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -34,6 +35,9 @@ class Hc9Adapter(
         if (bgImage.imageUrl != null) {
           ivHc9.loadImage(bgImage.imageUrl)
         }
+      }
+      currentCard?.bgColor?.let {
+        cardViewHc9.setBackgroundColor(Color.parseColor(it))
       }
     }
   }

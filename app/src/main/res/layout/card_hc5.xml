@@ -8,6 +8,7 @@
       android:layout_height="@dimen/size_140dp"
       app:cardCornerRadius="@dimen/size_12dp"
       app:cardUseCompatPadding="true"
+      android:id="@+id/card_view_hc_5"
       >
 
     <androidx.constraintlayout.widget.ConstraintLayout
