@@ -23,6 +23,8 @@ import com.nikhilchauhan.contextual_cards.ui.adapters.Hc5Adapter
 import com.nikhilchauhan.contextual_cards.ui.adapters.Hc6Adapter
 import com.nikhilchauhan.contextual_cards.ui.adapters.Hc9Adapter
 import com.nikhilchauhan.contextual_cards.ui.callbacks.OnItemClickListener
+import com.nikhilchauhan.contextual_cards.utils.Utils.hide
+import com.nikhilchauhan.contextual_cards.utils.Utils.show
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
@@ -61,7 +63,10 @@ class CardsActivity : AppCompatActivity(), OnItemClickListener {
           cardsVM.cardsResponse.collect { response ->
             when (response) {
               is NetworkResult.Success -> {
-                progressBar.visibility = View.GONE
+                progressBar.hide()
+
+                Snackbar.make(root, R.string.response_fetched_successfully, Snackbar.LENGTH_LONG)
+                  .show()
                 hc3Adapter = Hc3Adapter(
                   cardsVM.hc3CardsList.value,
                   cardsVM.hc3TitleSpanList.value,
@@ -107,11 +112,12 @@ class CardsActivity : AppCompatActivity(), OnItemClickListener {
                 }
               }
               is NetworkResult.Error -> {
-                progressBar.visibility = View.GONE
+                progressBar.hide()
+                // progressBar.visibility = View.GONE
                 Snackbar.make(root, response.message.toString(), Snackbar.LENGTH_LONG).show()
               }
               is NetworkResult.InProgress -> {
-                progressBar.visibility = View.VISIBLE
+                progressBar.show()
               }
               else -> {
               }

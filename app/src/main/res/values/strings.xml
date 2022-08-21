@@ -13,4 +13,5 @@
   <string name="fampay">fampay</string>
   <string name="remind_later">remind later</string>
   <string name="dismiss_now">dismiss now</string>
+  <string name="response_fetched_successfully">Cards refreshed successfully.</string>
 </resources>
