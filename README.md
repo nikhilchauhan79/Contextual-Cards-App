@@ -1,5 +1,3 @@
-The purpose of this app to showcase:
-
 # Contextual cards app to show dynamic images and text as fetched from API response
 
 - Added .apk at root directory of project
