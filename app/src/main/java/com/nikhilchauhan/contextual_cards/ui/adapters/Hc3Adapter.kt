@@ -191,7 +191,7 @@ class Hc3Adapter(
           }
         }
         currentCard?.bgColor?.let {
-          cardViewHc3.setBackgroundColor(Color.parseColor(it))
+          constraintHc3.setBackgroundColor(Color.parseColor(it))
         }
         setButtonsStyle(currentCard)
       }
@@ -214,7 +214,7 @@ class Hc3Adapter(
           }
         }
         currentCard?.bgColor?.let {
-          cardViewHc3.setBackgroundColor(Color.parseColor(it))
+          constraintHc3.setBackgroundColor(Color.parseColor(it))
         }
         setButtonsStyle(currentCard)
       }

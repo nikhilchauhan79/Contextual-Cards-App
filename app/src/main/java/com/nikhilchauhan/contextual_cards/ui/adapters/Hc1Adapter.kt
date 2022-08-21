@@ -58,7 +58,7 @@ class Hc1Adapter(
         }
       }
       currentCard?.bgColor?.let {
-        cardViewHc1.setBackgroundColor(Color.parseColor(it))
+        constraintHc3.setBackgroundColor(Color.parseColor(it))
       }
       currentCard?.bgImage?.let {
 

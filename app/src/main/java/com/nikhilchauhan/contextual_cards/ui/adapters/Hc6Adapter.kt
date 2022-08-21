@@ -61,7 +61,7 @@ class Hc6Adapter(
       }
 
       currentCard?.bgColor?.let {
-        cardViewHc6.setBackgroundColor(Color.parseColor(it))
+        constraintHc6.setBackgroundColor(Color.parseColor(it))
       }
     }
   }

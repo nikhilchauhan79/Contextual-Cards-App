@@ -52,7 +52,7 @@ class Hc5Adapter(
         }
       }
       currentCard?.bgColor?.let {
-        cardViewHc5.setBackgroundColor(Color.parseColor(it))
+        constraintHc5.setBackgroundColor(Color.parseColor(it))
       }
     }
   }
