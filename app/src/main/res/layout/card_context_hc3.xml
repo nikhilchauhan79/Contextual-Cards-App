@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    >
+  <data>
+
+  </data>
+  <com.google.android.material.card.MaterialCardView
+      android:layout_width="match_parent"
+      android:layout_height="@dimen/size_350dp"
+      app:cardCornerRadius="@dimen/size_12dp"
+      app:cardUseCompatPadding="true"
+      android:id="@+id/card_view_hc_3"
+      >
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginVertical="@dimen/size_8dp"
+        >
+
+      <Button
+          android:id="@+id/btn_three_card"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_marginTop="@dimen/size_28dp"
+          android:backgroundTint="@color/black"
+          android:text="@string/sample_btn_text"
+          android:textColor="@color/white"
+          app:layout_constraintBottom_toBottomOf="parent"
+          app:layout_constraintLeft_toRightOf="@id/ll_context_menu"
+          app:layout_constraintTop_toBottomOf="@id/tv_body_text"
+          />
+
+      <ImageView
+          android:id="@+id/iv_three_card"
+          android:layout_width="@dimen/size_90dp"
+          android:layout_height="@dimen/size_80dp"
+          app:layout_constraintLeft_toRightOf="@id/ll_context_menu"
+          app:layout_constraintTop_toTopOf="parent"
+          />
+
+      <LinearLayout
+          android:id="@+id/ll_context_menu"
+          android:layout_width="wrap_content"
+          android:layout_height="match_parent"
+          app:layout_goneMarginEnd="@dimen/size_0dp"
+          android:gravity="center"
+          android:orientation="vertical"
+          android:background="@color/white"
+          app:layout_constraintBottom_toBottomOf="parent"
+          app:layout_constraintLeft_toLeftOf="parent"
+          app:layout_constraintTop_toTopOf="parent"
+          >
+
+        <include
+            layout="@layout/remind_later_card"
+            android:id="@+id/cv_remind_later"
+            android:layout_width="@dimen/size_72dp"
+            android:layout_height="@dimen/size_60dp"
+            android:clickable="true"
+            android:focusable="true"
+            android:layout_marginEnd="@dimen/size_20dp"
+            android:layout_marginStart="@dimen/size_20dp"
+            app:layout_constraintBottom_toTopOf="@id/cv_dismiss_now"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:cardCornerRadius="@dimen/size_12dp"
+            >
+
+
+        </include>
+
+        <include
+            layout="@layout/dismiss_now_card"
+            android:id="@+id/cv_dismiss_now"
+            android:layout_width="@dimen/size_72dp"
+            android:layout_height="@dimen/size_60dp"
+            android:layout_marginTop="@dimen/size_48dp"
+            android:clickable="true"
+            android:focusable="true"
+            android:layout_marginEnd="@dimen/size_20dp"
+            android:layout_marginStart="@dimen/size_20dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/cv_remind_later"
+            app:cardCornerRadius="@dimen/size_12dp"
+            >
+
+        </include>
+
+      </LinearLayout>
+
+      <TextView
+          android:id="@+id/tv_heading"
+          android:layout_width="@dimen/size_0dp"
+          android:layout_height="wrap_content"
+          android:layout_marginTop="@dimen/size_16dp"
+          android:text="@string/sample_heading"
+          android:textSize="@dimen/size_30sp"
+          app:layout_constraintLeft_toRightOf="@id/ll_context_menu"
+          app:layout_constraintTop_toBottomOf="@id/iv_three_card"
+          />
+
+      <TextView
+          android:id="@+id/tv_body_text"
+          android:layout_width="@dimen/size_0dp"
+          android:layout_height="wrap_content"
+          android:layout_marginTop="@dimen/size_28dp"
+          android:text="@string/sample_subtitle"
+          android:textSize="@dimen/size_12sp"
+          app:layout_constraintLeft_toRightOf="@id/ll_context_menu"
+          app:layout_constraintTop_toBottomOf="@id/tv_heading"
+          />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+  </com.google.android.material.card.MaterialCardView>
+
+</layout>

@@ -12,4 +12,7 @@ interface OnItemClickListener {
     position: Int,
     url: String
   )
+
+  fun onRemindLaterClick(position: Int)
+  fun onDismissNowClick(position: Int)
 }

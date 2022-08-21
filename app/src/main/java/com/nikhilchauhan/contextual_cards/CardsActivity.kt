@@ -5,6 +5,7 @@ import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.view.View.GONE
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Lifecycle
@@ -67,10 +68,12 @@ class CardsActivity : AppCompatActivity(), OnItemClickListener {
 
                 Snackbar.make(root, R.string.response_fetched_successfully, Snackbar.LENGTH_LONG)
                   .show()
+
                 hc3Adapter = Hc3Adapter(
                   cardsVM.hc3CardsList.value,
                   cardsVM.hc3TitleSpanList.value,
-                  cardsVM.hc3DescriptionSpanList.value, this@CardsActivity
+                  cardsVM.hc3DescriptionSpanList.value, this@CardsActivity,
+                  cardsVM.showMenuList.value
                 )
                 rvHc3.apply {
                   layoutManager = LinearLayoutManager(context, RecyclerView.HORIZONTAL, false)
@@ -162,5 +165,21 @@ class CardsActivity : AppCompatActivity(), OnItemClickListener {
     val openURL = Intent(Intent.ACTION_VIEW)
     openURL.data = Uri.parse(url)
     startActivity(openURL)
+  }
+
+  override fun onRemindLaterClick(position: Int) {
+    binding?.rvHc3?.visibility = GONE
+  }
+
+  override fun onDismissNowClick(position: Int) {
+    binding?.rvHc3?.visibility = GONE
+  }
+
+  inner class CustomLayoutManager(private val canScroll: Boolean) : LinearLayoutManager(
+    binding?.root?.context
+  ) {
+    override fun canScrollHorizontally(): Boolean {
+      return canScroll
+    }
   }
 }

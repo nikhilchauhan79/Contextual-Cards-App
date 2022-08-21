@@ -41,6 +41,10 @@ class CardsVM @Inject constructor(
   val hc3CardsList: MutableStateFlow<MutableList<Card?>> =
     MutableStateFlow(mutableListOf())
 
+  val scrollableMap = MutableStateFlow<MutableMap<CardGroupTypes, Boolean>?>(null)
+
+  val showMenuList = MutableStateFlow(mutableListOf<Boolean>())
+
   val hc9CardWidth = MutableStateFlow<Int?>(null)
   val hc3TitleSpanList: MutableStateFlow<MutableList<SpannableStringBuilder>> =
     MutableStateFlow(mutableListOf())
@@ -113,30 +117,36 @@ class CardsVM @Inject constructor(
           nnGroup.cards?.let { cardList ->
             hc1CardsList.value.addAll(cardList)
             createSpans(cardList, Hc1)
+            nnGroup.isScrollable?.let { scrollableMap.value?.put(Hc1, it) }
           }
         }
         "HC3" -> {
           nnGroup.cards?.let { cardList ->
             hc3CardsList.value.addAll(cardList)
+            showMenuList.value.add(false)
             createSpans(cardList, Hc3)
+            nnGroup.isScrollable?.let { scrollableMap.value?.put(Hc3, it) }
           }
         }
         "HC5" -> {
           nnGroup.cards?.let { cardList ->
             hc5CardsList.value.addAll(cardList)
             createSpans(cardList, Hc5)
+            nnGroup.isScrollable?.let { scrollableMap.value?.put(Hc5, it) }
           }
         }
         "HC6" -> {
           nnGroup.cards?.let { cardList ->
             hc6CardsList.value.addAll(cardList)
             createSpans(cardList, Hc6)
+            nnGroup.isScrollable?.let { scrollableMap.value?.put(Hc6, it) }
           }
         }
         "HC9" -> {
           nnGroup.cards?.let { cardList ->
             hc9CardsList.value.addAll(cardList)
             createSpans(cardList, Hc9)
+            nnGroup.isScrollable?.let { scrollableMap.value?.put(Hc9, it) }
           }
         }
       }
@@ -149,6 +159,7 @@ class CardsVM @Inject constructor(
     hc9CardsList.value = mutableListOf()
     hc6CardsList.value = mutableListOf()
     hc3CardsList.value = mutableListOf()
+    showMenuList.value = mutableListOf()
   }
 
   private fun createSpans(
