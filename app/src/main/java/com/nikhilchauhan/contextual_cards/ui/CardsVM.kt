@@ -1,10 +1,12 @@
 package com.nikhilchauhan.contextual_cards.ui
 
+import android.content.SharedPreferences
 import android.graphics.Color
 import android.text.Spannable
 import android.text.SpannableStringBuilder
 import android.text.style.ForegroundColorSpan
 import android.util.Log
+import androidx.core.content.edit
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.nikhilchauhan.contextual_cards.data.remote.NetworkResult
@@ -20,7 +22,9 @@ import com.nikhilchauhan.contextual_cards.ui.CardGroupTypes.Hc3
 import com.nikhilchauhan.contextual_cards.ui.CardGroupTypes.Hc5
 import com.nikhilchauhan.contextual_cards.ui.CardGroupTypes.Hc6
 import com.nikhilchauhan.contextual_cards.ui.CardGroupTypes.Hc9
+import com.nikhilchauhan.contextual_cards.utils.AppConstants
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
@@ -28,20 +32,26 @@ import javax.inject.Inject
 
 @HiltViewModel
 class CardsVM @Inject constructor(
-  private val repository: CardsRepository
+  private val repository: CardsRepository,
+  private val preferences: SharedPreferences
 ) : ViewModel() {
+  private val _cardsResponse: MutableStateFlow<NetworkResult<CardsResponse>?> =
+    MutableStateFlow(NetworkResult.INIT)
 
   init {
     fetchCardsResponse()
   }
 
-  private val _cardsResponse: MutableStateFlow<NetworkResult<CardsResponse>?> =
-    MutableStateFlow(null)
-
   val hc3CardsList: MutableStateFlow<MutableList<Card?>> =
     MutableStateFlow(mutableListOf())
 
   val scrollableMap = MutableStateFlow<MutableMap<CardGroupTypes, Boolean>?>(null)
+
+  val showHc3Card: MutableStateFlow<Boolean> = MutableStateFlow(true)
+
+  fun setHc3CardVisiblity() {
+    showHc3Card.value = preferences.getBoolean(AppConstants.SHOW_HC3, true)
+  }
 
   val showMenuList = MutableStateFlow(mutableListOf<Boolean>())
 
@@ -91,7 +101,7 @@ class CardsVM @Inject constructor(
   val cardsResponse = _cardsResponse.asStateFlow()
 
   fun fetchCardsResponse() {
-    viewModelScope.launch {
+    viewModelScope.launch(Dispatchers.IO) {
       _cardsResponse.emit(NetworkResult.InProgress())
       repository.getCards().collect { response ->
         _cardsResponse.emit(response)
@@ -150,6 +160,12 @@ class CardsVM @Inject constructor(
           }
         }
       }
+    }
+  }
+
+  fun handleDismissNowClick() {
+    preferences.edit {
+      putBoolean(AppConstants.SHOW_HC3, false)
     }
   }
 

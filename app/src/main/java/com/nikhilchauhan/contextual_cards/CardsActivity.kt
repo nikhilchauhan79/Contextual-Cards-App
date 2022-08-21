@@ -47,7 +47,7 @@ class CardsActivity : AppCompatActivity(), OnItemClickListener {
 
     _binding = ActivityCardsBinding.inflate(layoutInflater)
     setContentView(binding?.root)
-
+    cardsVM.setHc3CardVisiblity()
     binding?.apply {
       handleResponse()
       swipeContainer.setOnRefreshListener {
@@ -129,6 +129,13 @@ class CardsActivity : AppCompatActivity(), OnItemClickListener {
         }
 
         launch {
+          cardsVM.showHc3Card.collect { visibility ->
+            if (!visibility) {
+              rvHc3.hide()
+            }
+          }
+        }
+        launch {
           cardsVM.hc9CardWidth.collect { width ->
             width?.let { nnWidth ->
               Log.d("width", "handleResponse: " + nnWidth)
@@ -173,13 +180,6 @@ class CardsActivity : AppCompatActivity(), OnItemClickListener {
 
   override fun onDismissNowClick(position: Int) {
     binding?.rvHc3?.visibility = GONE
-  }
-
-  inner class CustomLayoutManager(private val canScroll: Boolean) : LinearLayoutManager(
-    binding?.root?.context
-  ) {
-    override fun canScrollHorizontally(): Boolean {
-      return canScroll
-    }
+    cardsVM.handleDismissNowClick()
   }
 }

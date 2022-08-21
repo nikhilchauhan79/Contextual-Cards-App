@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="@dimen/size_72dp"
-    android:layout_height="@dimen/size_60dp"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
     android:id="@+id/cv_remind_later"
     app:cardCornerRadius="@dimen/size_12dp"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -10,8 +10,8 @@
 
     <LinearLayout
         android:id="@+id/ll_remind_later"
-        android:layout_width="@dimen/size_72dp"
-        android:layout_height="@dimen/size_60dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:orientation="vertical"
         android:background="@color/grey_light"
         android:padding="@dimen/size_8dp"
@@ -29,6 +29,7 @@
           android:layout_height="wrap_content"
           android:text="@string/remind_later"
           android:gravity="center"
+          android:textSize="@dimen/size_10sp"
           android:textColor="@color/black"
           />
 

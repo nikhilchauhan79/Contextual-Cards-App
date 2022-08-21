@@ -27,4 +27,5 @@
   <dimen name="size_100dp">100dp</dimen>
   <dimen name="size_72dp">72dp</dimen>
   <dimen name="size_48dp">48dp</dimen>
+  <dimen name="size_10sp">10sp</dimen>
 </resources>
