@@ -15,7 +15,7 @@ import com.bumptech.glide.Glide
 import com.nikhilchauhan.contextual_cards.data.remote.responsemodel.CardsResponse.CardGroup.Card
 import com.nikhilchauhan.contextual_cards.databinding.CardHc3Binding
 import com.nikhilchauhan.contextual_cards.ui.adapters.Hc3Adapter.Hc3ViewHolder
-import com.nikhilchauhan.contextual_cards.ui.callbacks.OnItemLongPressListener
+import com.nikhilchauhan.contextual_cards.ui.callbacks.OnItemClickListener
 import com.nikhilchauhan.contextual_cards.utils.Utils.hide
 import com.nikhilchauhan.contextual_cards.utils.Utils.show
 
@@ -23,15 +23,28 @@ class Hc3Adapter(
   private val cards: List<Card?>,
   private val titleSpans: List<SpannableStringBuilder>,
   private val descriptionSpans: List<SpannableStringBuilder>,
-  private val onItemLongPressListener: OnItemLongPressListener
+  private val onItemClickListener: OnItemClickListener
 ) : RecyclerView.Adapter<Hc3ViewHolder>() {
 
   inner class Hc3ViewHolder(val binding: CardHc3Binding) : RecyclerView.ViewHolder(binding.root) {
     init {
-      binding.root.setOnLongClickListener {
-        onItemLongPressListener.onLongPress(layoutPosition, it)
-        // showContextMenu(layoutPosition)
-        true
+      binding.root.apply {
+        setOnLongClickListener {
+          onItemClickListener.onLongPress(layoutPosition, it)
+          // showContextMenu(layoutPosition)
+          true
+        }
+
+        setOnClickListener {
+          cards[layoutPosition]?.url?.let { nnUrl ->
+            onItemClickListener.onItemClick(layoutPosition, nnUrl)
+          }
+        }
+      }
+      binding.btnThreeCard.setOnClickListener {
+        cards[layoutPosition]?.cta?.get(0)?.url?.let { nnUrl ->
+          onItemClickListener.onItemClick(layoutPosition, nnUrl)
+        }
       }
     }
 

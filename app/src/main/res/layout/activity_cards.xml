@@ -7,8 +7,8 @@
   <LinearLayout
       android:layout_width="match_parent"
       android:layout_height="match_parent"
-      android:orientation="vertical"
       android:fitsSystemWindows="true"
+      android:orientation="vertical"
       >
 
     <androidx.appcompat.widget.Toolbar
@@ -29,6 +29,7 @@
           android:gravity="center"
           android:orientation="horizontal"
           >
+
         <TextView
             android:id="@+id/toolbar_title"
             android:layout_width="wrap_content"
@@ -45,6 +46,8 @@
             android:layout_gravity="center"
             android:src="@drawable/fampay_logo"
             />
+
+
       </LinearLayout>
 
 
@@ -67,6 +70,9 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_marginEnd="@dimen/size_20dp"
+            android:layout_marginStart="@dimen/size_20dp"
+            android:layout_marginTop="@dimen/size_20dp"
             tools:context=".CardsActivity"
             >
 
@@ -113,7 +119,7 @@
           <androidx.recyclerview.widget.RecyclerView
               android:id="@+id/rv_hc5"
               android:layout_width="match_parent"
-              android:layout_height="@dimen/size_140dp"
+              android:layout_height="wrap_content"
               android:layout_marginBottom="@dimen/size_16dp"
               android:maxHeight="@dimen/size_180dp"
               android:orientation="horizontal"

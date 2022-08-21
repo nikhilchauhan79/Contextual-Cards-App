@@ -5,18 +5,32 @@ import android.text.SpannableStringBuilder
 import android.text.method.LinkMovementMethod
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.databinding.adapters.ViewBindingAdapter.setOnLongClickListener
 import androidx.recyclerview.widget.RecyclerView
 import com.nikhilchauhan.contextual_cards.data.remote.responsemodel.CardsResponse.CardGroup.Card
 import com.nikhilchauhan.contextual_cards.databinding.CardHc6Binding
 import com.nikhilchauhan.contextual_cards.ui.adapters.Hc6Adapter.Hc6ViewHolder
+import com.nikhilchauhan.contextual_cards.ui.callbacks.OnItemClickListener
 
 class Hc6Adapter(
   private val cards: List<Card?>,
   private val titleSpans: List<SpannableStringBuilder>,
   private val descriptionSpans: List<SpannableStringBuilder>,
+  private val onItemClickListener: OnItemClickListener
 ) : RecyclerView.Adapter<Hc6ViewHolder>() {
 
-  inner class Hc6ViewHolder(val binding: CardHc6Binding) : RecyclerView.ViewHolder(binding.root)
+  inner class Hc6ViewHolder(val binding: CardHc6Binding) : RecyclerView.ViewHolder(binding.root){
+    init {
+      binding.root.apply {
+        setOnClickListener {
+          cards[layoutPosition]?.url?.let { nnUrl ->
+            onItemClickListener.onItemClick(layoutPosition, nnUrl)
+          }
+        }
+      }
+
+    }
+  }
 
   override fun onCreateViewHolder(
     parent: ViewGroup,

@@ -1,5 +1,7 @@
 package com.nikhilchauhan.contextual_cards
 
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -9,9 +11,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.LinearSmoothScroller
 import androidx.recyclerview.widget.RecyclerView
-import androidx.recyclerview.widget.RecyclerView.SmoothScroller
 import com.google.android.material.snackbar.Snackbar
 import com.nikhilchauhan.contextual_cards.data.remote.NetworkResult
 import com.nikhilchauhan.contextual_cards.databinding.ActivityCardsBinding
@@ -22,12 +22,12 @@ import com.nikhilchauhan.contextual_cards.ui.adapters.Hc3Adapter
 import com.nikhilchauhan.contextual_cards.ui.adapters.Hc5Adapter
 import com.nikhilchauhan.contextual_cards.ui.adapters.Hc6Adapter
 import com.nikhilchauhan.contextual_cards.ui.adapters.Hc9Adapter
-import com.nikhilchauhan.contextual_cards.ui.callbacks.OnItemLongPressListener
+import com.nikhilchauhan.contextual_cards.ui.callbacks.OnItemClickListener
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
-class CardsActivity : AppCompatActivity(), OnItemLongPressListener {
+class CardsActivity : AppCompatActivity(), OnItemClickListener {
   private var _binding: ActivityCardsBinding? = null
   private val cardsVM: CardsVM by viewModels()
 
@@ -78,7 +78,7 @@ class CardsActivity : AppCompatActivity(), OnItemLongPressListener {
                 hc6Adapter = Hc6Adapter(
                   cardsVM.hc6CardsList.value,
                   cardsVM.hc6TitleSpanList.value,
-                  cardsVM.hc6DescriptionSpanList.value
+                  cardsVM.hc6DescriptionSpanList.value, this@CardsActivity
                 )
                 rvHc6.apply {
                   layoutManager = LinearLayoutManager(context, RecyclerView.HORIZONTAL, false)
@@ -88,28 +88,17 @@ class CardsActivity : AppCompatActivity(), OnItemLongPressListener {
                 hc5Adapter = Hc5Adapter(
                   cardsVM.hc5CardsList.value,
                   cardsVM.hc5TitleSpanList.value,
-                  cardsVM.hc5DescriptionSpanList.value
+                  cardsVM.hc5DescriptionSpanList.value, this@CardsActivity
                 )
                 rvHc5.apply {
                   layoutManager = LinearLayoutManager(context, RecyclerView.HORIZONTAL, false)
                   adapter = hc5Adapter
                 }
 
-                hc9Adapter = Hc9Adapter(
-                  cardsVM.hc9CardsList.value,
-                  cardsVM.hc9TitleSpanList.value,
-                  cardsVM.hc9DescriptionSpanList.value
-                )
-
-                rvHc9.apply {
-                  layoutManager = LinearLayoutManager(context, RecyclerView.HORIZONTAL, false)
-                  adapter = hc9Adapter
-                }
-
                 hc1Adapter = Hc1Adapter(
                   cardsVM.hc1CardsList.value,
                   cardsVM.hc1TitleSpanList.value,
-                  cardsVM.hc1DescriptionSpanList.value
+                  cardsVM.hc1DescriptionSpanList.value, this@CardsActivity
                 )
 
                 rvHc1.apply {
@@ -129,6 +118,27 @@ class CardsActivity : AppCompatActivity(), OnItemLongPressListener {
             }
           }
         }
+
+        launch {
+          cardsVM.hc9CardWidth.collect { width ->
+            width?.let { nnWidth ->
+              Log.d("width", "handleResponse: " + nnWidth)
+              hc9Adapter = Hc9Adapter(
+                cardsVM.hc9CardsList.value,
+                cardsVM.hc9TitleSpanList.value,
+                cardsVM.hc9DescriptionSpanList.value,
+                this@CardsActivity,
+                nnWidth
+              )
+
+              rvHc9.apply {
+                layoutManager = LinearLayoutManager(context, RecyclerView.HORIZONTAL, false)
+                adapter = hc9Adapter
+              }
+            }
+
+          }
+        }
       }
     }
   }
@@ -137,6 +147,14 @@ class CardsActivity : AppCompatActivity(), OnItemLongPressListener {
     position: Int,
     view: View
   ) {
+  }
 
+  override fun onItemClick(
+    position: Int,
+    url: String
+  ) {
+    val openURL = Intent(Intent.ACTION_VIEW)
+    openURL.data = Uri.parse(url)
+    startActivity(openURL)
   }
 }

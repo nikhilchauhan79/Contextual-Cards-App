@@ -3,12 +3,12 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     >
   <com.google.android.material.card.MaterialCardView
+      android:id="@+id/card_view_hc_5"
       android:layout_width="match_parent"
-      android:maxHeight="@dimen/size_180dp"
       android:layout_height="@dimen/size_140dp"
+      android:maxHeight="@dimen/size_180dp"
       app:cardCornerRadius="@dimen/size_12dp"
       app:cardUseCompatPadding="true"
-      android:id="@+id/card_view_hc_5"
       >
 
     <androidx.constraintlayout.widget.ConstraintLayout

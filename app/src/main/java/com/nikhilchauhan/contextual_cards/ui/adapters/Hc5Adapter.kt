@@ -8,14 +8,27 @@ import androidx.recyclerview.widget.RecyclerView
 import com.nikhilchauhan.contextual_cards.data.remote.responsemodel.CardsResponse.CardGroup.Card
 import com.nikhilchauhan.contextual_cards.databinding.CardHc5Binding
 import com.nikhilchauhan.contextual_cards.ui.adapters.Hc5Adapter.Hc5ViewHolder
+import com.nikhilchauhan.contextual_cards.ui.callbacks.OnItemClickListener
 
 class Hc5Adapter(
   private val cards: List<Card?>,
   private val titleSpans: List<SpannableStringBuilder>,
   private val descriptionSpans: List<SpannableStringBuilder>,
+  private val onItemClickListener: OnItemClickListener
 ) : RecyclerView.Adapter<Hc5ViewHolder>() {
 
-  inner class Hc5ViewHolder(val binding: CardHc5Binding) : RecyclerView.ViewHolder(binding.root)
+  inner class Hc5ViewHolder(val binding: CardHc5Binding) : RecyclerView.ViewHolder(binding.root){
+    init {
+      binding.root.apply {
+        setOnClickListener {
+          cards[layoutPosition]?.url?.let { nnUrl ->
+            onItemClickListener.onItemClick(layoutPosition, nnUrl)
+          }
+        }
+      }
+
+    }
+  }
 
   override fun onCreateViewHolder(
     parent: ViewGroup,

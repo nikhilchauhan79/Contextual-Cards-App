@@ -4,7 +4,6 @@ import android.graphics.Color
 import android.text.Spannable
 import android.text.SpannableStringBuilder
 import android.text.style.ForegroundColorSpan
-import android.text.style.URLSpan
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -42,6 +41,7 @@ class CardsVM @Inject constructor(
   val hc3CardsList: MutableStateFlow<MutableList<Card?>> =
     MutableStateFlow(mutableListOf())
 
+  val hc9CardWidth = MutableStateFlow<Int?>(null)
   val hc3TitleSpanList: MutableStateFlow<MutableList<SpannableStringBuilder>> =
     MutableStateFlow(mutableListOf())
 
@@ -91,7 +91,16 @@ class CardsVM @Inject constructor(
       _cardsResponse.emit(NetworkResult.InProgress())
       repository.getCards().collect { response ->
         _cardsResponse.emit(response)
+        getHc9CardHeight(response.data?.cardGroups)
         filterCardGroups(response.data?.cardGroups)
+      }
+    }
+  }
+
+  private fun getHc9CardHeight(cardGroups: List<CardGroup?>?) {
+    cardGroups?.map {
+      if (it?.height != null) {
+        hc9CardWidth.value = it.height
       }
     }
   }
@@ -171,9 +180,6 @@ class CardsVM @Inject constructor(
             ForegroundColorSpan(Color.parseColor(nnEntity.color)), 0, nnText.length,
             Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
           )
-          url?.let {
-            spanStr.setSpan(URLSpan(url), 0, nnText.length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
-          }
         }
         spansList.add(spanStr)
       }
@@ -268,9 +274,6 @@ class CardsVM @Inject constructor(
             ForegroundColorSpan(Color.parseColor(nnEntity.color)), 0, nnText.length,
             Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
           )
-          url?.let {
-            spanStr.setSpan(URLSpan(url), 0, nnText.length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
-          }
         }
         spansList.add(spanStr)
       }
